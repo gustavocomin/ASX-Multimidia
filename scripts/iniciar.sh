@@ -13,7 +13,7 @@ fi
 case ${1-} in
     --help|-h) usage; exit 0 ;;
     --dry-run|-n)
-        printf '%s\n' 'Modo seco. A execução normal grava o inventário e prepara o Codex, se necessário.'
+        printf '%s\n' 'Modo seco. A execução normal grava o inventário, tenta a coleta Wi-Fi e prepara o Codex, se necessário.'
         exit 0
         ;;
     --somente-inventario) prepare_codex=no ;;
@@ -107,6 +107,16 @@ printf 'Inventário salvo em %s\n' "$report"
 if [ "$prepare_codex" = no ]; then
     exit 0
 fi
+
+connection_script="$project_root/scripts/diagnosticar-conexao.sh"
+if [ -f "$connection_script" ]; then
+    if connection_report=$(sh "$connection_script" --automatico); then
+        printf 'Coleta de conexão salva em %s\n' "$connection_report"
+    else
+        printf '%s\n' 'A coleta de conexão não pôde ser concluída.' >&2
+    fi
+fi
+
 
 codex_dir="${CODEX_INSTALL_DIR:-$HOME/.local/bin}"
 if ! command -v codex >/dev/null 2>&1 && [ -x "$codex_dir/codex" ]; then

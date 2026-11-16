@@ -33,13 +33,26 @@ Para simular a execução sem coletar dados nem criar arquivo, use `sh scripts/i
 
 ## Coleta offline no carro (Ubuntu)
 
-Se a central oferecer uma rede Wi-Fi à qual o notebook consiga se conectar, entre nessa rede pelo menu do Ubuntu. Na raiz do projeto, rode:
+Com a central ligada e anunciando o Wi-Fi, o comando padrão `sh scripts/iniciar.sh` já inicia a coleta. Se houver um único adaptador, uma única rede visível no formato `Car_Wifi_…` e um perfil salvo para ela, o script tenta conectar, coleta o resultado e restaura a conexão Wi-Fi anterior. Credenciais são gerenciadas pelo Ubuntu. O script grava o caminho do relatório e segue para a etapa do Codex.
+
+A coleta automática também pode ser executada separadamente com `sh scripts/diagnosticar-conexao.sh --automatico`.
+
+Para coletar de uma rede à qual o notebook já está conectado, use o modo abaixo. Na raiz do projeto, rode:
 
 ```sh
 sh scripts/diagnosticar-conexao.sh
 ```
 
-A coleta usa `nmcli` e `ip`, já registrados no inventário do notebook. Ela consulta apenas a conexão Wi-Fi ativa e salva um arquivo em `logs/conexao-*/conexao.txt`. O arquivo registra SSID, canal, sinal, IPv4, rotas e IPs já presentes no cache de vizinhos. A coleta funciona sem internet e dispensa varredura de rede.
+A coleta usa `nmcli` e `ip`, já registrados no inventário do notebook. Ela consulta apenas a conexão Wi-Fi ativa e salva um arquivo em `logs/conexao-*/conexao.txt`. O arquivo registra SSID, canal, sinal, IPv4, rotas e IPs já presentes no cache de vizinhos. A coleta funciona sem internet. O modo automático pode atualizar a lista de redes Wi-Fi e usa somente consultas locais para coletar o estado, sem varredura de IPs ou portas.
+
+Se a tentativa de conexão falhar, mantenha aberta a tela da central que exibe o nome da rede e rode a coleta logo depois da tentativa:
+
+```sh
+sh scripts/diagnosticar-conexao.sh --rede "NOME_DA_REDE"
+```
+
+O modo `--rede` procura apenas o SSID indicado no cache do NetworkManager, registra o estado do adaptador e, quando disponíveis, inclui os motivos das transições dos últimos cinco minutos. Ele funciona mesmo com o notebook desconectado ou com internet por outra rede. A ausência do SSID no cache só descreve o que o Ubuntu conhecia naquele momento.
+
 
 Volte ao Wi-Fi com internet e peça ao Codex para ler o arquivo gerado. Se o relatório listar mais de uma interface Wi-Fi, repita o comando com o nome da interface conectada à central como argumento.
 

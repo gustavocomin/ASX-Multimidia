@@ -90,14 +90,23 @@ case "$*" in
 esac
 FAKE_CODEX
 
+export ASX_FIXTURE_WIFI_MODE="$temp_root/wifi-mode"
+cat > "$temp_root/scripts/diagnosticar-conexao.sh" <<'FAKE_WIFI'
+printf '%s\n' "$1" > "$ASX_FIXTURE_WIFI_MODE"
+printf '%s\n' 'relatorio-conexao.txt'
+FAKE_WIFI
+
 chmod +x "$temp_root/bin/curl"
 PATH="$ASX_FIXTURE_BIN" /bin/sh "$entry" --dry-run
 PATH="$ASX_FIXTURE_BIN" /bin/sh "$entry" --somente-inventario
 test ! -e "$ASX_FIXTURE_TRACE"
+test ! -e "$ASX_FIXTURE_WIFI_MODE"
 
 PATH="$ASX_FIXTURE_BIN" /bin/sh "$entry"
 test "$(cat "$ASX_FIXTURE_TRACE")" = "$(printf '%s\n' download install status login)"
 test -x "$CODEX_INSTALL_DIR/codex"
+test -f "$ASX_FIXTURE_WIFI_MODE"
+test "$(cat "$ASX_FIXTURE_WIFI_MODE")" = --automatico
 
 # The installed executable is still outside PATH, as in a fresh terminal profile.
 PATH="$ASX_FIXTURE_BIN" /bin/sh "$entry"
