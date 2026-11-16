@@ -1,6 +1,6 @@
 # Fase 0 — Pesquisa remota da multimídia do ASX 2014
 
-Pesquisa de 16/11/2026. A preparação do kit portátil está registrada no relatório de ambiente. O inventário do notebook fica para depois do clone. As identificações da unidade vêm da transcrição das fotos no plano mestre.
+Pesquisa de 16/11/2026. A preparação do kit portátil está registrada no relatório de ambiente. O inventário posterior do notebook está registrado no relatório de ambiente. As identificações da unidade vêm da transcrição das fotos no plano mestre.
 
 ## Identificação da unidade
 
@@ -58,7 +58,7 @@ A prioridade depende de confirmar o que acontece na falha do rádio. Se reaparec
 | Fase | Situação |
 | --- | --- |
 | 0 — Pesquisa remota | Rodada inicial registrada no relatório e na matriz. Identificação de OEM/placa ainda em aberto |
-| 1 — Preparação | Kit preparado para Linux e Windows. Inventário do notebook pendente. [Relatório do ambiente](01-ambiente.md) |
+| 1 — Preparação | Kit preparado para Linux e Windows. Inventário do notebook registrado em Ubuntu. [Relatório do ambiente](01-ambiente.md) |
 | 2–3 — Conectividade e causa-raiz | Aguardam acesso ao carro. Nenhuma interface comprovada |
 | 4 — Recuperação | Procedimento e backup ainda indisponíveis |
 | 5–8 — Correção, alternativas, implementação e validação | Análise preliminar de alternativas registrada. Correção e validação em veículo pendentes |

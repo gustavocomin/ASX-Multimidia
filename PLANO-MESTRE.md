@@ -96,6 +96,9 @@ Android Auto.
 
 ### 1.3 Preferências operacionais
 
+-   O notebook usado na auditoria tem **três portas USB físicas**, uma
+    delas **USB 3.0**, conforme informado pelo proprietário.
+
 -   Priorizar **automação pelo Claude Code ou Codex no notebook
     Windows**.
 -   Uma única inicialização pelo usuário, se possível, e um único
