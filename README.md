@@ -56,6 +56,20 @@ O modo `--rede` procura apenas o SSID indicado no cache do NetworkManager, regis
 
 Volte ao Wi-Fi com internet e peça ao Codex para ler o arquivo gerado. Se o relatório listar mais de uma interface Wi-Fi, repita o comando com o nome da interface conectada à central como argumento.
 
+## Alternativa com celular Android por USB
+
+Use esta alternativa se só o celular conseguir entrar no Wi-Fi da Knup. O compartilhamento da rede Wi-Fi pelo USB depende do aparelho. No iPhone, o Acesso Pessoal compartilha dados móveis.
+
+1. Com o Android conectado à rede da Knup, anote o endereço **Roteador** ou **Gateway** nos detalhes do Wi-Fi.
+2. Ligue o celular por USB ao notebook e ative **Compartilhamento por USB**.
+3. Na raiz do projeto, rode o comando abaixo, substituindo `IP_DA_CENTRAL` pelo endereço anotado.
+
+```sh
+sh scripts/diagnosticar-ponte-usb.sh IP_DA_CENTRAL
+```
+
+A coleta funciona offline e grava `logs/ponte-usb-*/ponte-usb.txt`. Ela consulta a rota que o Ubuntu já selecionaria. Se a rota passar pelo USB, testa uma única resposta ICMP no endereço informado. Uma resposta indica alcance ao endereço, e ainda é preciso confirmar a identidade do equipamento e a interface de diagnóstico. A ausência de resposta deixa a ponte inconclusiva.
+
 ## Retomar a auditoria
 
 - [Pesquisa da central](reports/00-pesquisa.md)
