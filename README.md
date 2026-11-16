@@ -31,6 +31,18 @@ O comando grava um inventário local em `logs/` e mostra o caminho do arquivo. E
 
 Para simular a execução sem coletar dados nem criar arquivo, use `sh scripts/iniciar.sh --dry-run` no Linux ou acrescente `-WhatIf` ao comando do Windows.
 
+## Coleta offline no carro (Ubuntu)
+
+Se a central oferecer uma rede Wi-Fi à qual o notebook consiga se conectar, entre nessa rede pelo menu do Ubuntu. Na raiz do projeto, rode:
+
+```sh
+sh scripts/diagnosticar-conexao.sh
+```
+
+A coleta usa `nmcli` e `ip`, já registrados no inventário do notebook. Ela consulta apenas a conexão Wi-Fi ativa e salva um arquivo em `logs/conexao-*/conexao.txt`. O arquivo registra SSID, canal, sinal, IPv4, rotas e IPs já presentes no cache de vizinhos. A coleta funciona sem internet e dispensa varredura de rede.
+
+Volte ao Wi-Fi com internet e peça ao Codex para ler o arquivo gerado. Se o relatório listar mais de uma interface Wi-Fi, repita o comando com o nome da interface conectada à central como argumento.
+
 ## Retomar a auditoria
 
 - [Pesquisa da central](reports/00-pesquisa.md)
