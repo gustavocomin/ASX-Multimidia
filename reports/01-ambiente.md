@@ -11,3 +11,5 @@ Os scripts estão preparados para Linux e Windows. O sistema do notebook ainda n
 O WSL 2 permitiu testar a execução em Linux e a leitura do sysfs exposto a esse ambiente. O USB e a rede do notebook físico ainda precisam ser inventariados. Os relatórios das execuções de validação ficaram em pastas temporárias fora do projeto.
 
 As ferramentas são detectadas no PATH. O inventário usa os provedores locais do Windows ou o sysfs no Linux. A coleta de logs da central depende da confirmação de uma interface própria. O [README](../README.md) contém o comando de cada sistema.
+
+O caminho padrão no Linux também prepara o Codex CLI. Os testes no WSL 2 simularam instalação, login, sessão existente e falha no download. A instalação e a autenticação reais ficam para a execução no notebook.

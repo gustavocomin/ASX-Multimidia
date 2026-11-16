@@ -1,9 +1,9 @@
 #!/bin/sh
 set -eu
-export LC_ALL=C
+prepare_codex=yes
 
 usage() {
-    printf '%s\n' 'Uso: sh scripts/iniciar.sh [--dry-run]'
+    printf '%s\n' 'Uso: sh scripts/iniciar.sh [--dry-run | --somente-inventario]'
 }
 
 if [ "$#" -gt 1 ]; then
@@ -13,9 +13,10 @@ fi
 case ${1-} in
     --help|-h) usage; exit 0 ;;
     --dry-run|-n)
-        printf '%s\n' 'Modo seco. Uma execução normal grava o inventário local em logs/.'
+        printf '%s\n' 'Modo seco. A execução normal grava o inventário e prepara o Codex, se necessário.'
         exit 0
         ;;
+    --somente-inventario) prepare_codex=no ;;
     '') ;;
     *) usage >&2; exit 2 ;;
 esac
@@ -32,7 +33,8 @@ mkdir -p "$log_dir"
 run_dir=$(mktemp -d "$log_dir/inventario-$stamp-XXXXXX")
 report="$run_dir/inventario.md"
 
-{
+(
+    export LC_ALL=C
     printf '# Inventário local — ASX Multimídia\n\n'
     printf 'Data (UTC) · %s\n\n' "$(date -u +'%Y-%m-%d %H:%M:%SZ')"
     printf '%s\n\n' 'O inventário descreve o ambiente que executou o script.'
@@ -98,5 +100,47 @@ report="$run_dir/inventario.md"
 
     printf '\n## Central multimídia\n\n'
     printf '%s\n' 'Interface de diagnóstico da ZCD9200-6956-MIPI-5G ainda sem comprovação. O acesso à central depende de documentação da revisão e identificação da interface.'
-} > "$report"
+) > "$report"
 printf 'Inventário salvo em %s\n' "$report"
+
+
+if [ "$prepare_codex" = no ]; then
+    exit 0
+fi
+
+codex_dir="${CODEX_INSTALL_DIR:-$HOME/.local/bin}"
+if ! command -v codex >/dev/null 2>&1 && [ -x "$codex_dir/codex" ]; then
+    export PATH="$codex_dir:$PATH"
+fi
+
+if ! command -v codex >/dev/null 2>&1; then
+    if ! command -v curl >/dev/null 2>&1; then
+        printf '%s\n' 'O instalador do Codex precisa do curl. Instale o curl e execute este script novamente.' >&2
+        exit 1
+    fi
+
+    printf '%s\n' 'Instalando o Codex CLI com o instalador oficial da OpenAI.'
+    if ! (
+        installer=$(mktemp) || exit 1
+        trap 'rm -f -- "$installer"' EXIT
+        curl --proto '=https' --proto-redir '=https' -fsSL -o "$installer" \
+            https://chatgpt.com/codex/install.sh &&
+            CODEX_NON_INTERACTIVE=1 sh "$installer"
+    ); then
+        printf '%s\n' 'A instalação do Codex falhou. O inventário local foi salvo.' >&2
+        exit 1
+    fi
+    export PATH="$codex_dir:$PATH"
+
+    if ! command -v codex >/dev/null 2>&1; then
+        printf '%s\n' 'O instalador terminou, mas o executável do Codex não foi encontrado.' >&2
+        exit 1
+    fi
+fi
+
+if codex login status >/dev/null 2>&1; then
+    printf '%s\n' 'O Codex já está autenticado.'
+else
+    printf '%s\n' 'Conclua o login do Codex na página que abrir no navegador.'
+    codex login
+fi

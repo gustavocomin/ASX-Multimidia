@@ -17,6 +17,10 @@ No **Linux**, use o terminal.
 sh scripts/iniciar.sh
 ```
 
+No Linux, o comando grava o inventário, verifica a presença do Codex CLI e usa o instalador oficial da OpenAI caso ele esteja faltando. A instalação precisa de internet e de `curl`. Se o Codex estiver sem sessão, o script executa `codex login` e você conclui o acesso à sua conta do ChatGPT no navegador. [Instalação do Codex CLI](https://learn.chatgpt.com/docs/codex/cli) · [Autenticação](https://learn.chatgpt.com/docs/auth)
+
+Para rodar só o inventário no Linux, use `sh scripts/iniciar.sh --somente-inventario`.
+
 No **Windows**, use o PowerShell.
 
 ```powershell
